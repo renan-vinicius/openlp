@@ -1,10 +1,10 @@
 <?php
 
 /* Recebe dados da música do formulário */
-$titulo = $_POST["titulo"];
-$autor = $_POST["autor"];
-$propriedade = $_POST["propriedade"];
-$conteudo = $_POST["conteudo"];
+$titulo = $_POST["titulo"]; // nome da música
+$autor = $_POST["autor"]; // nome do autor/compositor
+$propriedade = $_POST["propriedade"]; // tipo de verso: estrofe ou refrão
+$conteudo = $_POST["conteudo"]; // letra da música
 
 function quebraLinhas($vetor){
 	$linhas = explode("\n", $vetor);
