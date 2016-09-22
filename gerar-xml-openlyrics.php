@@ -36,7 +36,7 @@ $song->setAttribute('createdIn', 'OpenLP-RV');
 $song->setAttribute('modifiedIn', '');
 $song->setAttribute('modifiedDate', '2016-03-30T17:18:10.614Z');
 
-// Elementos do OpenSong
+// Criar elementos do padrão OpenLyrics
 $properties = $xml->createElement( "properties");
 $lyrics = $xml->createElement( "lyrics");
 $titles = $xml->createElement("titles");
@@ -53,6 +53,8 @@ $properties->appendChild($authors);
 $titles->appendChild($title);
 $authors->appendChild($author);
 
+/* Divisão dos versos */
+
 $i=0;
 $qtdeRefrao = 1;
 $qtdeVerso = 1;
@@ -61,12 +63,12 @@ foreach ($conteudo as $estrofeC){
    $i++;
    $verso = $xml->createElement("verse");
 
-   if($propriedade[$i-0]=="c"){
+   if($propriedade[$i-0]=="c"){ // contabiliza o ID do refrão
       $valor = $qtdeRefrao;
       $qtdeRefrao++;
   }
   else{
-      $valor = $qtdeVerso;
+      $valor = $qtdeVerso; // atribui o ID do verso
       $qtdeVerso++;
   }
   
@@ -76,23 +78,21 @@ foreach ($conteudo as $estrofeC){
   $verso->appendChild($lines);
 }	
 
-
+/* Definições do arquivo */
 $xml->formatOutput = true;
 $xml->preserveWhiteSpace = true;
 $xml_string = $xml->saveXML();
 
-$novastring = str_replace("&#13;&lt;br/&gt;", "<br/>", $xml_string); 
-$novastring = str_replace("&#13;", "<br/>", $novastring); 
+$novastring = str_replace("&#13;&lt;br/&gt;", "<br/>", $xml_string); // remove caracteres dos versos
+$novastring = str_replace("&#13;", "<br/>", $novastring); // remove caracteres dos versos
 
-/* Definições do arquivo */
-
+/* Nome e caminho do arquivo */
 $nomeAjustado = utf8_decode($titulo) . ' - ' . utf8_decode($autor) . '.xml';
 $caminho = 'musicas/'.$nomeAjustado;
 $nomeDoArquivo = $caminho;
 $arquivo = fopen($nomeDoArquivo, "w") or die("Não é possível abrir o arquivo");
 $conteudo = $novastring;
 fwrite($arquivo,$conteudo);
-
 
 header('Location: baixar.php?url='.$nomeDoArquivo.'&nome='.$nomeAjustado); //redirecionar e forçar download do arquivo
 ?>
